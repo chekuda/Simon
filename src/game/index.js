@@ -24,7 +24,7 @@ class Game {
     }
   }
 
-  handleButton(button, cName){
+  handleButtonState(button, cName){
     const handler = cName === 'start'
       ? () => this.newCells.removeHandlers()
       : () => this.newCells.setHandlers(this.newUser.addSequence)
@@ -42,7 +42,7 @@ class Game {
   restartTheGame(button){
     this.newSimon.resetSequence()
     this.newUser.resetSequence()
-    this.handleButton(button, 'start')
+    this.handleButtonState(button, 'start')
     this.setLevel()
   }
 
@@ -51,11 +51,11 @@ class Game {
       if(event.target.className === 'start') {
         event.target.style.visibility = 'hidden'
         this.newSimon.addSequence()
-        handleColor(this.newCells.cells, this.newSimon.sequence, () => this.handleButton(event.target, 'check'))
+        handleColor(this.newCells.cells, this.newSimon.sequence, () => this.handleButtonState(event.target, 'check'))
         this.setLevel()
       } else {
         if(this.newUser.currentSequence.join('') === this.newSimon.sequence.join('')) {
-          this.handleButton(event.target, 'continue')
+          this.handleButtonState(event.target, 'continue')
           this.newUser.resetSequence()
         } else {
           this.restartTheGame(event.target)

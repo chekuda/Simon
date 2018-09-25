@@ -1,5 +1,6 @@
 const path = require('path')
-const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const HTMLWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = (env) => ({
   entry: ['./src/index.js'],
@@ -24,7 +25,7 @@ module.exports = (env) => ({
         test: /\.s?css$/,
         exclude: /node_modules/,
         use: [
-          MiniCssExtractPlugin.loader,
+          env === 'dev' ? 'style-loader' : MiniCssExtractPlugin.loader,
           'css-loader',
           'sass-loader'
         ]
@@ -32,6 +33,13 @@ module.exports = (env) => ({
     ]
   },
   plugins: [
-    new MiniCssExtractPlugin({ filename: 'style.css' }),
+    new HTMLWebpackPlugin({
+      template: path.join(__dirname, '/index.html'),
+      filename: 'index.html',
+      inject: 'body'
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'style.css'
+    })
   ]
 })
